@@ -6,5 +6,5 @@ public class Pokemon {
 	private String tipo;
 
 
-
 }
+

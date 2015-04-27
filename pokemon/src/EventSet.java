@@ -12,19 +12,20 @@ class EventSet {
 	}
 	
 	public Event getNext() {
-		boolean looped = false;
-		int start = next;
-		do {
-			next = (next + 1) % events.length;
-			// See if it has looped to the beginning:
-			if(start == next) looped = true;
-			// If it loops past start, the list
-			// is empty:
-			if((next == (start + 1) % events.length)
-					&& looped)
-				return null;
-		} while(events[next] == null);
-		return events[next];
+		if (events[0] == null)
+			return events[1];	
+		else if (events[1] == null)
+			return events[0];
+			
+		if (events[0].getPrioridade() >= events[1].getPrioridade()) {
+			next = 0;
+			return events[0];
+		}
+		else {
+			next = 1;
+			return events[1];
+		}
+
 	}
 	
 	public void removeCurrent() {

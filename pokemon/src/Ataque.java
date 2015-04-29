@@ -1,31 +1,24 @@
+	public class Ataque {
 
-private class Ataque extends Event {
-	
-	private int dano;
-	String descricao;
-	String msgAtaque;
-	
+		private int dano;
+		private String nomeAtaque;
+		private int prioridade;
 
-	public Ataque(int prioridade) {
-		super(prioridade);
+		public Ataque(int dano, String nomeAtaque, int prioridade) {
+			this.prioridade = prioridade;
+			this.dano = dano;
+			this.nomeAtaque = nomeAtaque;
 		}
-	
-	public int getDano() {
-		return dano;
+
+		public int getDano() {
+			return dano;
+		}
+
+		public String getNome() {
+			return nomeAtaque;
+		}
+		
+		public int getPrioridade() {
+			return prioridade;
+		}
 	}
-	
-	public void action() {
-		System.out.println(msgAtaque);
-		addEvent(new Ataque(prioridade));
-	}
-	
-
-	public String description() {
-		return descricao;
-	}
-
-
-	
-	
-
-}

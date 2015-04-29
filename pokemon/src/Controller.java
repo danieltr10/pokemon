@@ -6,15 +6,13 @@ public class Controller {
 	public void addEvent(Event c) { es.add(c); }
 	
 	public void run() {
-		int i = 0;
-		while (i < 2) {
-			Event e;
-			e = es.getNext();
-			e.action();
-			System.out.println(e.description());
-			es.removeCurrent();
-			i++;
-		}
+		Event e;
+	    while((e = es.getNext()) != null) {
+	    	e.action();
+	    	System.out.println(e.description());
+	   		es.removeCurrent();
+	   }
 	}
+	
 }
 

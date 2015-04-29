@@ -1,7 +1,7 @@
 
 class EventSet {
 	
-	private Event[] events = new Event[100];
+	private Event[] events = new Event[3];
 	private int index = 0;
 	private int next = 0;
 	
@@ -12,20 +12,39 @@ class EventSet {
 	}
 	
 	public Event getNext() {
-		if (events[0] == null)
-			return events[1];	
-		else if (events[1] == null)
-			return events[0];
-			
-		if (events[0].getPrioridade() >= events[1].getPrioridade()) {
+	
+		Event maiorPrioridade = null;
+		
+		if (events[0] == null && events[1] == null && events[2] == null) {
+			return null;
+		}
+		
+		if (events[0] != null)
+			maiorPrioridade = events[0];
+		else if (events[1] != null)
+			maiorPrioridade = events[1];
+		else if (events[2] != null)
+			maiorPrioridade = events[2];
+		
+		int i = 0;
+		
+		while (i < 3) {
+			if (events[i] != null)
+				if (maiorPrioridade.getPrioridade() > events[i].getPrioridade()) {
+					maiorPrioridade = events[i];
+				}
+		i++;
+					
+		} 
+		
+		if (maiorPrioridade == events[0])
 			next = 0;
-			return events[0];
-		}
-		else {
+		else if (maiorPrioridade == events[1])
 			next = 1;
-			return events[1];
-		}
-
+		else if (maiorPrioridade == events[2])
+			next = 2;
+		
+		return maiorPrioridade;
 	}
 	
 	public void removeCurrent() {

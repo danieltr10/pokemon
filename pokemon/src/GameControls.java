@@ -41,8 +41,9 @@ public class GameControls extends Controller {
 		private Treinador alvo;
 		private int cura = 20;
 		
-		public usarItem(int prioridade) {
-			super(prioridade);
+		public usarItem(Treinador alvo) {
+			super(2); // Evento de prioridade 2
+			this.alvo = alvo;
 		}
 		
 		public void action() {
@@ -61,18 +62,68 @@ public class GameControls extends Controller {
 		
 	}
 
+	public class trocarPokemon extends Event {
+		
+		private Treinador treinador;
+		private int novoPokemon;
+		
+		public trocarPokemon(Treinador treinador, int novoPokemon) {
+			super(1); // Evento de prioridade 1
+			this.treinador = treinador;
+			this.novoPokemon = novoPokemon;
+		}
+		
+		public void action() {
+			
+			treinador.escolherPokemonAtivo(novoPokemon);
+			
+		}
+
+		public String description() {
+			Pokemon pokAtivo = treinador.getPokemonAtivo();
+			
+			return "O jogador " + treinador.getNome() + " escolheu o pokemon " + pokAtivo.getNome() + "(" + pokAtivo.getHP() + ")";
+
+		}
+		
+	}
+	
+	public class Fugir extends Event {
+		
+		private Treinador treinador;
+		String nomeTreinador;
+		
+		public Fugir(Treinador treinador) {
+			super(0); // Evento de prioridade 0
+			this.treinador = treinador;
+			nomeTreinador = treinador.getNome();
+		}
+		
+		public void action() {
+			
+			treinador = null;
+			System.out.println(treinador);
+			
+		}
+
+		public String description() {
+			
+			return "O jogador " + nomeTreinador + " fugiu da batalha";
+
+		}
+		
+	}
 	
 	public class Restart extends Event {
 
-		public Restart(int prioridade) {
-			super(prioridade);
+		public Restart() {
+			super(7);
 		}
 		
 		public void action() {
 			
 			addEvent(new Atacar(3, jogador1, jogador2, 2));
 			addEvent(new Atacar(3, jogador2, jogador1, 2));
-			
 
 		}
 
@@ -85,7 +136,7 @@ public class GameControls extends Controller {
 	public static void main(String[] args) {
 		
 		GameControls gc = new GameControls();
-		gc.addEvent(gc.new Restart(7));
+		gc.addEvent(gc.new Restart());
 		gc.run();
 		
 	}

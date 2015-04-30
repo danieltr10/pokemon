@@ -22,6 +22,10 @@ public class Pokemon {
 		HP -= dano;
 	}
 	
+	public void curarHP(int cura) {
+		HP += cura;
+	}
+	
 	public String getNome() {
 		return nome;
 	}

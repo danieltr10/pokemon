@@ -35,7 +35,33 @@ public class GameControls extends Controller {
 		}
 		
 	}
+	
+	public class usarItem extends Event {
+		
+		private Treinador alvo;
+		private int cura = 20;
+		
+		public usarItem(int prioridade) {
+			super(prioridade);
+		}
+		
+		public void action() {
+			Pokemon pokAlvo = alvo.getPokemonAtivo();
+			
+			pokAlvo.curarHP(cura);
+			
+		}
 
+		public String description() {
+			Pokemon pokAlvo = alvo.getPokemonAtivo();
+			
+			return "O jogador " + alvo.getNome() + " curou o pokemon " + pokAlvo.getNome() + "(" + pokAlvo.getHP() + ")";
+
+		}
+		
+	}
+
+	
 	public class Restart extends Event {
 
 		public Restart(int prioridade) {

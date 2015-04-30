@@ -21,8 +21,8 @@ public class GameControls extends Controller {
 			Pokemon pokAlvo = alvo.getPokemonAtivo();
 			
 			int danoAtaque = pokAgressor.getDanoAtaque(tipoAtaque);
-			pokAlvo.reduzirHP(danoAtaque);
 			
+			pokAlvo.reduzirHP(danoAtaque);			
 		}
 
 		public String description() {
@@ -30,7 +30,7 @@ public class GameControls extends Controller {
 			Pokemon pokAlvo = alvo.getPokemonAtivo();
 			
 			return "O jogador " + agressor.getNome() + " atacou o pokemon " + pokAlvo.getNome() + "("+ pokAlvo.getHP() + ")" + " do jogador "
-					+ alvo.getNome() + " com o pokemon " + pokAgressor.getNome() + "("+ pokAlvo.getHP() + ")";
+					+ alvo.getNome() + " com o pokemon " + pokAgressor.getNome() + "("+ pokAgressor.getHP() + ")";
 
 		}
 		

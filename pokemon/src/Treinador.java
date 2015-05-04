@@ -4,11 +4,10 @@ public class Treinador {
 	private String nome;
 	private Pokemon[] listaDePokemons = new Pokemon[6];
 	private int pokemonAtivo = 0;
-	private ListaDePokemons pokemonsDisponiveis;
 	
 	public Treinador(ListaDePokemons pokemonsDisponiveis, String nome, int pokemon0, int pokemon1, int pokemon2, int pokemon3, int pokemon4, int pokemon5) {
-		this.pokemonsDisponiveis = pokemonsDisponiveis;
 		this.nome =  nome;
+		
 		listaDePokemons[0] = pokemonsDisponiveis.getPokemon(pokemon0);
 		listaDePokemons[1] = pokemonsDisponiveis.getPokemon(pokemon1);
 		listaDePokemons[2] = pokemonsDisponiveis.getPokemon(pokemon2);

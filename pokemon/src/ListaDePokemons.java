@@ -81,13 +81,24 @@ public class ListaDePokemons {
 	public void mostraLista() {
 		System.out.println("Lista de Pokemons:");
 		
+		System.out.println("0) Não quero mais pokemons!");
 		int i = 0;
 		while (i < numeroDePokemons) {
-			System.out.println(i + ")" + listaDePokemons[i].getNome());
+			System.out.println((i + 1) + ") " + listaDePokemons[i].getNome());
+			i++;
 		}
 	}
 	
+	public int getNumeroDePokemons() {
+		return numeroDePokemons;
+	}
+	
 	public Pokemon getPokemon(int pokemon) {
-		return listaDePokemons[pokemon];
+		if (pokemon >= 0 && pokemon < numeroDePokemons) {
+			return listaDePokemons[pokemon];
+		}
+		else {
+			return null;
+		}
 	}
 }

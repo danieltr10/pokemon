@@ -1,8 +1,36 @@
+import java.util.Scanner;
+
 
 public class GameControls extends Controller {
 	
-	Treinador jogador1 = new Treinador("Ash");
-	Treinador jogador2 = new Treinador("Jessie");
+	public Treinador criaTreinador() {
+		ListaDePokemons pokemonsDisponiveis = new ListaDePokemons();
+		
+		Scanner leituraDoTeclado = new Scanner (System.in);
+		System.out.println("Primeiro treinador, digite o seu nome:");
+		String nome = leituraDoTeclado.next();
+		
+		pokemonsDisponiveis.mostraLista();
+		System.out.println("Digite o numero de um pokemon que deseja ou digite um numero que não esteja na lista para não escolher nenhum.");
+		System.out.println("Pokemon0:");
+		int pokemon0 = leituraDoTeclado.nextInt();
+		System.out.println("Pokemon1:");
+		int pokemon1 = leituraDoTeclado.nextInt();
+		System.out.println("Pokemon2:");
+		int pokemon2 = leituraDoTeclado.nextInt();
+		System.out.println("Pokemon3:");
+		int pokemon3 = leituraDoTeclado.nextInt();
+		System.out.println("Pokemon4:");
+		int pokemon4 = leituraDoTeclado.nextInt();
+		System.out.println("Pokemon5:");
+		int pokemon5 = leituraDoTeclado.nextInt();
+		
+		leituraDoTeclado.close();
+		
+		return new Treinador(pokemonsDisponiveis, nome, pokemon0, pokemon1, pokemon2, pokemon3, pokemon4, pokemon5);
+	}
+	Treinador treinador1 = criaTreinador();
+	Treinador treinador2 = criaTreinador();
 	
 	public class Atacar extends Event {
 		

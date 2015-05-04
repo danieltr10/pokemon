@@ -4,16 +4,17 @@ public class Treinador {
 	private String nome;
 	private Pokemon[] listaDePokemons = new Pokemon[6];
 	private int pokemonAtivo = 0;
+	private ListaDePokemons pokemonsDisponiveis;
 	
-	public Treinador(String nome) {
+	public Treinador(ListaDePokemons pokemonsDisponiveis, String nome, int pokemon0, int pokemon1, int pokemon2, int pokemon3, int pokemon4, int pokemon5) {
+		this.pokemonsDisponiveis = pokemonsDisponiveis;
 		this.nome =  nome;
-		listaDePokemons[0] = new Pokemon("Charmander","Fogo", 200, "Bola de fogo", 15, 3, "Lanca Chamas", 25, 4, "Explosao", 50, 5, "Apocalipse", 100, 6);
-		listaDePokemons[1] = new Pokemon("Pikachu","Raio", 200, "Choque Leve", 15, 3, "Curto Circuito", 25, 4, "Eletrocutar", 50, 5, "Choque do Trovao", 100, 6);
-		listaDePokemons[2] = new Pokemon("Teste3","Raio", 200, "Choque Leve", 15, 3, "Curto Circuito", 25, 4, "Eletrocutar", 50, 5, "Choque do Trovao", 100, 6);
-		listaDePokemons[3] = new Pokemon("Teste4","Raio", 200, "Choque Leve", 15, 3, "Curto Circuito", 25, 4, "Eletrocutar", 50, 5, "Choque do Trovao", 100, 6);
-		listaDePokemons[4] = new Pokemon("Teste5","Raio", 200, "Choque Leve", 15, 3, "Curto Circuito", 25, 4, "Eletrocutar", 50, 5, "Choque do Trovao", 100, 6);
-		listaDePokemons[5] = new Pokemon("Teste6","Raio", 200, "Choque Leve", 15, 3, "Curto Circuito", 25, 4, "Eletrocutar", 50, 5, "Choque do Trovao", 100, 6);
-		
+		listaDePokemons[0] = pokemonsDisponiveis.getPokemon(pokemon0);
+		listaDePokemons[1] = pokemonsDisponiveis.getPokemon(pokemon1);
+		listaDePokemons[2] = pokemonsDisponiveis.getPokemon(pokemon2);
+		listaDePokemons[3] = pokemonsDisponiveis.getPokemon(pokemon3);
+		listaDePokemons[4] = pokemonsDisponiveis.getPokemon(pokemon4);
+		listaDePokemons[5] = pokemonsDisponiveis.getPokemon(pokemon5);
 	}
 	
 	public Pokemon getPokemonAtivo() {

@@ -150,8 +150,8 @@ public class GameControls extends Controller {
 		
 		public void action() {
 			
-			addEvent(new Atacar(3, jogador1, jogador2, 2));
-			addEvent(new Atacar(3, jogador2, jogador1, 2));
+			addEvent(new Atacar(3, treinador1, treinador2, 2));
+			addEvent(new Atacar(3, treinador2, treinador1, 2));
 
 		}
 

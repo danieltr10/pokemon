@@ -40,8 +40,10 @@ public class GameControls extends Controller {
 		return new Treinador(pokemonsDisponiveis, nome, pokemonsDesejados[0], pokemonsDesejados[1], pokemonsDesejados[2], pokemonsDesejados[3], pokemonsDesejados[4], pokemonsDesejados[5]);
 	}
 	
-	Treinador treinador1 = criaTreinador();
-	Treinador treinador2 = criaTreinador();
+	public boolean treinadorAindaPodeBatalhar() {
+		//...
+		return true;
+	}
 	
 	public class Atacar extends Event {
 		
@@ -142,23 +144,29 @@ public class GameControls extends Controller {
 			super(7);
 		}
 		
-		public void action() {
+		public void action() { //só tenho acesso aos treinadores
+			Treinador treinador1 = criaTreinador();
+			Treinador treinador2 = criaTreinador();
 			
-			while () {
+			while () { //enquanto nenhum dos treinadores ganhar, isto é, enquanto nenhum deles ficar com 0 pokemons vivos
 				System.out.println("Treinador 1, escolha sua ação:");
-				//imprimir eventos possiveis
+				//imprimir eventos possiveis*
+				//pedir o evento para o usuário*
+				//colocar o evento no Controller*
+				//*podem ser feitos na funçao escolherEvento()
 				
+				//msm coisa com o treinador 2
+				
+				//executar os eventos -> run()
 			}
-			
-			addEvent(new Atacar(3, treinador1, treinador2, 2));
-			addEvent(new Atacar(3, treinador2, treinador1, 2));
+			//anunciar vencedor
 		}
 
 		public String description() {
 			return "Nova batalha iniciada!";
 		}
 		
-		public void mostrarEventos() {
+		public void escolherEvento() {
 			System.out.println("Eventos por ordem de prioridade");
 			System.out.println("FODA-SE");
 		}
@@ -166,7 +174,7 @@ public class GameControls extends Controller {
 	
 	public static void main(String[] args) {
 		
-		GameControls gc = new GameControls(); //cria os treinadores
+		GameControls gc = new GameControls();
 		gc.addEvent(gc.new Restart()); //cria uma batalha
 		gc.run(); //inicia a batalha
 		

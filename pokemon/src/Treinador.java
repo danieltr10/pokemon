@@ -40,7 +40,7 @@ public class Treinador {
 		return sucesso;
 	}
 	
-	public int escolheUmPokemonVivo () {
+	public int escolheUmPokemonVivo() {
 		
 		int[] pokemonsVivos = new int[6];
 		int posicao_listaDePokemons = 0, posicao_pokemonsVivos = 0;
@@ -53,18 +53,28 @@ public class Treinador {
 			}
 			posicao_listaDePokemons++;
 		}
-		
-		System.out.println("Digite o numero do novo pokemon ativo:");
-		Scanner leituraDoTeclado = new Scanner (System.in);
-		int pokemonEscolhido = leituraDoTeclado.nextInt();
-		
-		if (pokemonEscolhido >= 0 && pokemonEscolhido <= posicao_pokemonsVivos) {
-			pokemonEscolhido = pokemonsVivos[pokemonEscolhido];
+		if (posicao_pokemonsVivos == 0) {
+			return 6;
 		}
-		else {
-			pokemonEscolhido = 6;
+		
+		boolean sucesso = false;
+		Scanner leituraDoTeclado = null;
+		int pokemonEscolhido = 0;
+		while (!sucesso) {
+			System.out.println("Digite o numero do novo pokemon ativo:");
+			leituraDoTeclado = new Scanner (System.in);
+			pokemonEscolhido = leituraDoTeclado.nextInt();
+			
+			if (pokemonEscolhido >= 0 && pokemonEscolhido <= posicao_pokemonsVivos) {
+				pokemonEscolhido = pokemonsVivos[pokemonEscolhido];
+				sucesso = true;
+			}
+			else {
+				System.out.println("Pokemon invávido!!");
+			}
 		}
-		 leituraDoTeclado.close();
-		 return pokemonEscolhido;
+		
+		leituraDoTeclado.close();
+		return pokemonEscolhido;
 	}
 }

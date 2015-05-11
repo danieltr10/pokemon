@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 
 public class Pokemon {
 	
@@ -44,12 +46,41 @@ public class Pokemon {
 		return HP;
 	}
 	
-	public int getDanoAtaque(int tipoAtaque) {
-		return listaDeAtaques[tipoAtaque].getDano();
+	public int getDanoAtaque(Ataque tipoAtaque) {
+		return tipoAtaque.getDano();
 	}
 	
 	public boolean pokemonEstaVivo() {
 		return vivo;
+	}
+	
+	public Ataque escolherAtaque() {
+		System.out.println("Lista de ataques do seu pokemon:");
+		int i = 0;
+		while (i < 4 && listaDeAtaques[i] != null) {
+			System.out.println(i + ") " + listaDeAtaques[i].getNome());
+			i++;
+		}
+		
+		boolean sucesso = false;
+		Scanner leituraDoTeclado = new Scanner (System.in);
+		int numeroAtaqueEscolhido;
+		Ataque ataqueEscolhido = null;
+		while (!sucesso) {
+			System.out.println("Escolha o ataque que deseja usar:");
+			numeroAtaqueEscolhido = leituraDoTeclado.nextInt();
+			
+			if (numeroAtaqueEscolhido >= 0 && numeroAtaqueEscolhido < i) {
+				ataqueEscolhido = listaDeAtaques[numeroAtaqueEscolhido];
+				sucesso = true;
+			}
+			else {
+				System.out.println("Ataque inválido!!");
+			}
+		}
+		
+		leituraDoTeclado.close();
+		return ataqueEscolhido;
 	}
 }
 

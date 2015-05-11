@@ -10,7 +10,7 @@ public class GameControls extends Controller {
 		System.out.println("Novo treinador, digite o seu nome:");
 		String nome = leituraDoTeclado.next();
 		
-		System.out.println("Agora, escolha os pokemons com os quais quer batalhar.");
+		System.out.println("Agora escolha os pokemons com os quais quer batalhar.");
 		pokemonsDisponiveis.mostraLista();
 		
 		System.out.println("Digite o numero correspondente ao pokemon desejado...");
@@ -19,10 +19,9 @@ public class GameControls extends Controller {
 		boolean naoMaisPokemons = false;
 		
 		while (i < 6) {
-			
 			if (!naoMaisPokemons) {
 				System.out.println("Pokemon" + i + ":");
-				pokemonsDesejados[i] = leituraDoTeclado.nextInt() - 1;
+				pokemonsDesejados[i] = leituraDoTeclado.nextInt();
 				
 				if (pokemonsDesejados[i] == 0) {
 					pokemonsDesejados[i] = pokemonsDisponiveis.getNumeroDePokemons();
@@ -41,18 +40,16 @@ public class GameControls extends Controller {
 	}
 	
 	public boolean treinadorAindaPodeBatalhar(Treinador treinador) {
-		//verifica se o pokemon ativo do treinador ainda está vivo
-		//(o treinador pode ter perdido o pokemon no ataque anterior, com isso ele pode ter perdido a batalha tbm...)
-		return true;
+		return treinador.getPokemonAtivo().pokemonEstaVivo();
 	}
 	
 	public class Atacar extends Event {
 		
 		private Treinador agressor, alvo;
-		private int tipoAtaque;
+		private Ataque tipoAtaque;
 		
-		public Atacar(int prioridade, Treinador agressor, Treinador alvo, int tipoAtaque) {
-			super(prioridade);
+		public Atacar(Treinador agressor, Treinador alvo, Ataque tipoAtaque) {
+			super(tipoAtaque.getPrioridade());
 			this.agressor = agressor;
 			this.alvo = alvo;
 			this.tipoAtaque = tipoAtaque;
@@ -114,9 +111,7 @@ public class GameControls extends Controller {
 		}
 		
 		public void action() {
-			if (!treinador.redefinirPokemonAtivo(novoPokemon)) {
-				System.out.println("Não ocorreu a troca do pokemon ativo.");
-			}
+			treinador.redefinirPokemonAtivo(novoPokemon);
 		}
 
 		public String description() {
@@ -152,11 +147,11 @@ public class GameControls extends Controller {
 			super(7);
 		}
 		
-		public void action() { //só tenho acesso aos treinadores
+		public void action() {
 			Treinador treinador1 = criaTreinador();
 			Treinador treinador2 = criaTreinador();
 			
-			Controller listaDeEventos = new Controller();
+			GameControls listaDeEventos = new GameControls();
 			
 			System.out.println("Treinador 1, escolha o pokemon com o qual deseja começar.");
 			treinador1.redefinirPokemonAtivo(treinador1.escolheUmPokemonVivo());
@@ -164,47 +159,76 @@ public class GameControls extends Controller {
 			System.out.println("Treinador 2, escolha o pokemon com o qual deseja começar.");
 			treinador2.redefinirPokemonAtivo(treinador2.escolheUmPokemonVivo());
 			
-			while () { //enquanto nenhum dos treinadores ganhar, isto é, enquanto nenhum deles ficar com 0 pokemons vivos
+			Treinador treinadorVencedor = null;
+			while (treinadorVencedor == null) {
 				System.out.println("Treinador 1, escolha sua ação:");
-				//imprimir eventos possiveis*
-				//pedir o evento para o usuário*
-				//colocar o evento no Controller*
-				//*podem ser feitos na funçao escolherEvento()
+				listaDeEventos.addEvent(escolherEvento(treinador1, treinador2));
 				
-				//msm coisa com o treinador 2
+				System.out.println("Treinador 2, escolha sua ação:");
+				listaDeEventos.addEvent(escolherEvento(treinador2, treinador1));
 				
-				//executar os eventos -> run()
+				listaDeEventos.run();
+				
+				if (!treinadorAindaPodeBatalhar(treinador1)) {
+					System.out.println(treinador1.getNome() + ", seu pokemon foi derrotado!!");
+					if (!treinador1.redefinirPokemonAtivo(treinador1.escolheUmPokemonVivo())) {
+						treinadorVencedor = treinador2;
+					}
+				}
+				if (!treinadorAindaPodeBatalhar(treinador2)) {
+					System.out.println(treinador2.getNome() + ", seu pokemon foi derrotado!!");
+					if (!treinador2.redefinirPokemonAtivo(treinador2.escolheUmPokemonVivo())) {
+						treinadorVencedor = treinador1;
+					}
+				}
 			}
-			//anunciar vencedor
+			System.out.println("O treinador " + treinadorVencedor.getNome() + " vendeu a batalha!!");
+			System.out.println("Parabéns " + treinadorVencedor.getNome() + "!!!");
+			System.out.println("Fim da batalha!!");
 		}
 
 		public String description() {
 			return "Nova batalha iniciada!";
 		}
 		
-		public void escolherEvento() {
-			System.out.println("Eventos por ordem de prioridade");
+		public Event escolherEvento(Treinador treinador, Treinador outroTreinador) {
 			System.out.println("0) Fugir da batalha");
 			System.out.println("1) Trocar de pokemon");
 			System.out.println("2) Usar item de cura");
 			System.out.println("3) Atacar");
 			
 			Scanner leituraDoTeclado = new Scanner (System.in);
-			int eventoEscolhido = leituraDoTeclado.nextInt();
+			int numeroEventoEscolhido = leituraDoTeclado.nextInt();
+			Event eventoEscolhido;
 			
-			if (eventoEscolhido == 0) {
-				
+			if (numeroEventoEscolhido == 0) {
+				eventoEscolhido = new Fugir(treinador);
+			}
+			else if (numeroEventoEscolhido == 1) {
+				int novoPokemon = treinador.escolheUmPokemonVivo();
+				eventoEscolhido = new trocarPokemon(treinador, novoPokemon);
+			}
+			else if (numeroEventoEscolhido == 2) {
+				eventoEscolhido = new usarItem(treinador);
+			}
+			else if (numeroEventoEscolhido == 3) {
+				Ataque ataque = treinador.getPokemonAtivo().escolherAtaque();
+				eventoEscolhido = new Atacar(treinador, outroTreinador, ataque);
+			}
+			else {
+				eventoEscolhido = null;
 			}
 			
 			leituraDoTeclado.close();
+			return eventoEscolhido;
 		}
 	}
 	
 	public static void main(String[] args) {
 		
 		GameControls gc = new GameControls();
-		gc.addEvent(gc.new Restart()); //cria uma batalha
-		gc.run(); //inicia a batalha
+		gc.addEvent(gc.new Restart());
+		gc.run();
 		
 	}
 }

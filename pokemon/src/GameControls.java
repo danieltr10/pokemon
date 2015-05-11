@@ -22,7 +22,7 @@ public class GameControls extends Controller {
 			
 			if (!naoMaisPokemons) {
 				System.out.println("Pokemon" + i + ":");
-				pokemonsDesejados[i] = leituraDoTeclado.nextInt();
+				pokemonsDesejados[i] = leituraDoTeclado.nextInt() - 1;
 				
 				if (pokemonsDesejados[i] == 0) {
 					pokemonsDesejados[i] = pokemonsDisponiveis.getNumeroDePokemons();
@@ -40,8 +40,9 @@ public class GameControls extends Controller {
 		return new Treinador(pokemonsDisponiveis, nome, pokemonsDesejados[0], pokemonsDesejados[1], pokemonsDesejados[2], pokemonsDesejados[3], pokemonsDesejados[4], pokemonsDesejados[5]);
 	}
 	
-	public boolean treinadorAindaPodeBatalhar() {
-		//...
+	public boolean treinadorAindaPodeBatalhar(Treinador treinador) {
+		//verifica se o pokemon ativo do treinador ainda está vivo
+		//(o treinador pode ter perdido o pokemon no ataque anterior, com isso ele pode ter perdido a batalha tbm...)
 		return true;
 	}
 	
@@ -58,15 +59,20 @@ public class GameControls extends Controller {
 		}
 		
 		public void action() {
-			Pokemon pokAgressor = agressor.getPokemonAtivo();
-			Pokemon pokAlvo = alvo.getPokemonAtivo();
-			
-			int danoAtaque = pokAgressor.getDanoAtaque(tipoAtaque);
-			
-			pokAlvo.reduzirHP(danoAtaque);			
+			if (treinadorAindaPodeBatalhar(agressor)) {
+				Pokemon pokAgressor = agressor.getPokemonAtivo();
+				Pokemon pokAlvo = alvo.getPokemonAtivo();
+				
+				int danoAtaque = pokAgressor.getDanoAtaque(tipoAtaque);
+				
+				pokAlvo.reduzirHP(danoAtaque);
+			}
+			else {
+				agressor.redefinirPokemonAtivo(agressor.escolheUmPokemonVivo());
+			}
 		}
 
-		public String description() {
+		public String description() { //talvez tenha q mudar a descriçao para a situaçao q o ataque ocorreu ou nao
 			Pokemon pokAgressor = agressor.getPokemonAtivo();
 			Pokemon pokAlvo = alvo.getPokemonAtivo();
 			
@@ -75,7 +81,7 @@ public class GameControls extends Controller {
 		}
 	}
 	
-	public class usarItem extends Event {
+	public class usarItem extends Event { //revisar
 		
 		private Treinador alvo;
 		private int cura = 20;
@@ -108,16 +114,18 @@ public class GameControls extends Controller {
 		}
 		
 		public void action() {
-			treinador.escolherPokemonAtivo(novoPokemon);
+			if (!treinador.redefinirPokemonAtivo(novoPokemon)) {
+				System.out.println("Não ocorreu a troca do pokemon ativo.");
+			}
 		}
 
 		public String description() {
 			Pokemon pokAtivo = treinador.getPokemonAtivo();
 			return "O jogador " + treinador.getNome() + " escolheu o pokemon " + pokAtivo.getNome() + "(" + pokAtivo.getHP() + ")";
-		}	
+		}
 	}
 	
-	public class Fugir extends Event {
+	public class Fugir extends Event { //revisar
 		
 		private Treinador treinador;
 		String nomeTreinador;
@@ -148,6 +156,14 @@ public class GameControls extends Controller {
 			Treinador treinador1 = criaTreinador();
 			Treinador treinador2 = criaTreinador();
 			
+			Controller listaDeEventos = new Controller();
+			
+			System.out.println("Treinador 1, escolha o pokemon com o qual deseja começar.");
+			treinador1.redefinirPokemonAtivo(treinador1.escolheUmPokemonVivo());
+			
+			System.out.println("Treinador 2, escolha o pokemon com o qual deseja começar.");
+			treinador2.redefinirPokemonAtivo(treinador2.escolheUmPokemonVivo());
+			
 			while () { //enquanto nenhum dos treinadores ganhar, isto é, enquanto nenhum deles ficar com 0 pokemons vivos
 				System.out.println("Treinador 1, escolha sua ação:");
 				//imprimir eventos possiveis*
@@ -168,7 +184,19 @@ public class GameControls extends Controller {
 		
 		public void escolherEvento() {
 			System.out.println("Eventos por ordem de prioridade");
-			System.out.println("FODA-SE");
+			System.out.println("0) Fugir da batalha");
+			System.out.println("1) Trocar de pokemon");
+			System.out.println("2) Usar item de cura");
+			System.out.println("3) Atacar");
+			
+			Scanner leituraDoTeclado = new Scanner (System.in);
+			int eventoEscolhido = leituraDoTeclado.nextInt();
+			
+			if (eventoEscolhido == 0) {
+				
+			}
+			
+			leituraDoTeclado.close();
 		}
 	}
 	

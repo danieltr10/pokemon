@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 
 public class Treinador {
 	
@@ -24,7 +26,45 @@ public class Treinador {
 		return nome;
 	}
 	
-	public void escolherPokemonAtivo(int nPokemon) {
-		pokemonAtivo = nPokemon;
+	public boolean redefinirPokemonAtivo(int nPokemon) {
+		
+		boolean sucesso = true;
+		
+		if (nPokemon >= 0 && nPokemon < 6) {
+			pokemonAtivo = nPokemon;
+		}
+		else {
+			sucesso = false;
+		}
+		
+		return sucesso;
+	}
+	
+	public int escolheUmPokemonVivo () {
+		
+		int[] pokemonsVivos = new int[6];
+		int posicao_listaDePokemons = 0, posicao_pokemonsVivos = 0;
+		
+		while (posicao_listaDePokemons < 6) {
+			if (listaDePokemons[posicao_listaDePokemons] != null && listaDePokemons[posicao_listaDePokemons].pokemonEstaVivo()) {
+				pokemonsVivos[posicao_pokemonsVivos] = posicao_listaDePokemons;
+				posicao_pokemonsVivos++;
+				System.out.println(posicao_pokemonsVivos + ") " + listaDePokemons[posicao_listaDePokemons].getNome());
+			}
+			posicao_listaDePokemons++;
+		}
+		
+		System.out.println("Digite o numero do novo pokemon ativo:");
+		Scanner leituraDoTeclado = new Scanner (System.in);
+		int pokemonEscolhido = leituraDoTeclado.nextInt();
+		
+		if (pokemonEscolhido >= 0 && pokemonEscolhido <= posicao_pokemonsVivos) {
+			pokemonEscolhido = pokemonsVivos[pokemonEscolhido];
+		}
+		else {
+			pokemonEscolhido = 6;
+		}
+		 leituraDoTeclado.close();
+		 return pokemonEscolhido;
 	}
 }

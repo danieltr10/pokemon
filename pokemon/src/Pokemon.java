@@ -47,5 +47,9 @@ public class Pokemon {
 	public int getDanoAtaque(int tipoAtaque) {
 		return listaDeAtaques[tipoAtaque].getDano();
 	}
+	
+	public boolean pokemonEstaVivo() {
+		return vivo;
+	}
 }
 
